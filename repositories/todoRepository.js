@@ -30,17 +30,21 @@ const findById = (id) => {
   });
 };
 
-const getAllTodos = () => {
+const getAllTodos = (userid) => {
   return new Promise((resolve, reject) => {
-    dbPool.query("SELECT * FROM todos", (error, results, fields) => {
-      if (error) {
-        return reject(error);
+    dbPool.query(
+      "SELECT * FROM todos WHERE userid = ?",
+      userid,
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        if (results.length === 0) {
+          return resolve(null);
+        }
+        resolve(results);
       }
-      if (results.length === 0) {
-        return resolve(null);
-      }
-      resolve(results);
-    });
+    );
   });
 };
 

@@ -8,7 +8,8 @@ const {
 
 class TodoController {
   async createTodoItem(req, res) {
-    const { userid, title, description } = req.body;
+    const userid = req.user.id;
+    const { title, description } = req.body;
     const newTodo = new Todo(uuid(), userid, title, description);
 
     const response = await create(newTodo);
@@ -23,8 +24,13 @@ class TodoController {
   }
 
   async getAllTodos(req, res) {
-    const todos = await getAllTodos();
-    res.json(todos);
+    const userid = req.user.id;
+    const todos = await getAllTodos(userid);
+    if (todos) {
+      res.json(200, todos);
+    } else {
+      res.json(404, { message: "No todos found!" });
+    }
   }
 }
 

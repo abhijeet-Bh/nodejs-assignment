@@ -1,11 +1,14 @@
 const db = require("../config/db");
 
-const createUser = async (username, password) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  return db.query("INSERT INTO users (username, password) VALUES (?, ?)", [
-    username,
-    hashedPassword,
-  ]);
+const createUser = (user) => {
+  return new Promise((resolve, reject) => {
+    db.query("INSERT INTO users SET ?", user, (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve({ id: results.insertId, ...user });
+    });
+  });
 };
 
 const findUserByUsernameAndPassword = async (username, password) => {
