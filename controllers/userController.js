@@ -12,7 +12,7 @@ class UserController {
     const user = await findUserByUsernameAndPassword(username, password);
     if (user) {
       const token = generateToken(user);
-      res.json(200, { accesstoken: token });
+      res.json(200, { accessToken: token });
     } else {
       res.json(404, { message: "Invalid User credentials!" });
     }

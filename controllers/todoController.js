@@ -16,7 +16,7 @@ class TodoController {
 
     const response = await create(newTodo);
 
-    res.status(201).json({ message: response });
+    res.status(201).json(response);
   }
 
   async getTodoItem(req, res) {
@@ -39,6 +39,7 @@ class TodoController {
     const { todoid } = req.params;
     const { title, description } = req.body;
     const todoItem = await findById(todoid);
+    if (todoItem) {
     if (todoItem.userid == userid) {
       const newTodo = new Todo(todoid, userid, title, description);
 
@@ -48,6 +49,9 @@ class TodoController {
     } else {
       res.status(400).json({ message: "UnAuthorised user!" });
     }
+    } else {
+           res.status(404).json({ message: "Todo Not Found!" });
+         }
   }
 
   async deleteTodoItem(req, res) {
