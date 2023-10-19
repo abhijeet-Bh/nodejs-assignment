@@ -123,6 +123,7 @@ To get started with the project download thw above software and install. Then fo
 }
 ```
 >Note :- for wrong credentials, you'll get error.
+
 ![Picture](./repoassets/images/login_failure.png)
 
 ### `POST /todo`
@@ -209,6 +210,7 @@ To get started with the project download thw above software and install. Then fo
 }
 ```
 >Note:- This endpoint will only work, the todo you're requesting is created by you. In case if you haven't created, you will ge error.
+
 ![Picture](./repoassets/images/unauthorised_todo.png)
 
 ### `PUT /todo/{todo_id}`
@@ -240,6 +242,7 @@ To get started with the project download thw above software and install. Then fo
 ```
 
 >Note:- In Case of wrong `todoid` you'll get error.
+
 ![Picture](./repoassets/images/no_todo_found.png)
 
 ### `DEL /todo/{todo_id}`
@@ -259,4 +262,5 @@ To get started with the project download thw above software and install. Then fo
 ```
 
 >Note:- In Case of wrong `user` you'll get error.
+
 ![Picture](./repoassets/images/forbiden_attem.png)
