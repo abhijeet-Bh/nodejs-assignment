@@ -30,6 +30,42 @@ const findById = (id) => {
   });
 };
 
+const updateTodoItem = (id, todo) => {
+  return new Promise((resolve, reject) => {
+    dbPool.query(
+      "UPDATE todos SET ? WHERE todoid = ?",
+      [todo, id],
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        if (results.length === 0) {
+          return resolve(null);
+        }
+        resolve(todo);
+      }
+    );
+  });
+};
+
+const deleteTodo = (id) => {
+  return new Promise((resolve, reject) => {
+    dbPool.query(
+      "DELETE FROM todos WHERE todoid = ?",
+      id,
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        if (results.length === 0) {
+          return resolve(null);
+        }
+        resolve(id);
+      }
+    );
+  });
+};
+
 const getAllTodos = (userid) => {
   return new Promise((resolve, reject) => {
     dbPool.query(
@@ -48,4 +84,10 @@ const getAllTodos = (userid) => {
   });
 };
 
-module.exports = { create, findById, getAllTodos };
+module.exports = {
+  create,
+  findById,
+  getAllTodos,
+  updateTodoItem,
+  deleteTodo,
+};

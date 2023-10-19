@@ -4,6 +4,8 @@ const {
   create,
   findById,
   getAllTodos,
+  updateTodoItem,
+  deleteTodo,
 } = require("../repositories/todoRepository");
 
 class TodoController {
@@ -18,9 +20,47 @@ class TodoController {
   }
 
   async getTodoItem(req, res) {
+    const userid = req.user.id;
     const { id } = req.params;
     const todoItem = await findById(id);
-    res.status(200).json(todoItem);
+    if (todoItem) {
+      if (todoItem.userid == userid) {
+        res.status(200).json(todoItem);
+      } else {
+        res.status(400).json({ message: "UnAuthorised user!" });
+      }
+    } else {
+      res.status(404).json({ message: "Todo Not Found!" });
+    }
+  }
+
+  async updateTodoItem(req, res) {
+    const userid = req.user.id;
+    const { todoid } = req.params;
+    const { title, description } = req.body;
+    const todoItem = await findById(todoid);
+    if (todoItem.userid == userid) {
+      const newTodo = new Todo(todoid, userid, title, description);
+
+      const response = await updateTodoItem(todoid, newTodo);
+
+      res.status(201).json(response);
+    } else {
+      res.status(400).json({ message: "UnAuthorised user!" });
+    }
+  }
+
+  async deleteTodoItem(req, res) {
+    const { todoid } = req.params;
+    const userid = req.user.id;
+    const todoItem = await findById(todoid);
+
+    if (todoItem.userid == userid) {
+      const response = await deleteTodo(todoid);
+      res.status(201).json(response);
+    } else {
+      res.status(400).json({ message: "UnAuthorised user!" });
+    }
   }
 
   async getAllTodos(req, res) {
